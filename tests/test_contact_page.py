@@ -15,7 +15,7 @@ def test_contact_page_is_opened(contact_page: ContactPage) -> None:
         contact_page.open()
 
     with allure.step("Verify page title"):
-        assert contact_page.get_title() == "Contact"
+        contact_page.verify_title(ContactPage.PAGE_TITLE)
 
 
 @pytest.mark.regression

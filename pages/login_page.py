@@ -1,10 +1,11 @@
 from playwright.sync_api import Page, expect
 
+from config import LOGIN_URL
 from pages.base_page import BasePage
 
 
 class LoginPage(BasePage):
-    URL_PATH = "https://practicetestautomation.com/practice-test-login/"
+    URL_PATH = LOGIN_URL
 
     def __init__(self, page: Page) -> None:
         super().__init__(page)

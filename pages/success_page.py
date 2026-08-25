@@ -1,10 +1,12 @@
 from playwright.sync_api import Page, expect
 
+from config import SUCCESS_URL
 from pages.base_page import BasePage
 
 
 class SuccessPage(BasePage):
-    URL_PATH = "https://practicetestautomation.com/logged-in-successfully/"
+    URL_PATH = SUCCESS_URL
+    SUCCESS_TITLE = "Logged In Successfully"
 
     def __init__(self, page: Page) -> None:
         super().__init__(page)
@@ -12,6 +14,6 @@ class SuccessPage(BasePage):
         self.logout_button = page.get_by_role("link", name="Log out")
 
     def verify_successful_login(self) -> None:
-        expect(self.page).to_have_url(self.URL_PATH)
-        expect(self.title).to_have_text("Logged In Successfully")
+        self.verify_url(self.URL_PATH)
+        expect(self.title).to_have_text(self.SUCCESS_TITLE)
         expect(self.logout_button).to_be_visible()

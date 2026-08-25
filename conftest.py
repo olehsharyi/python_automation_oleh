@@ -1,14 +1,10 @@
-import os
-
 import allure
 import pytest
-from dotenv import load_dotenv
 from playwright.sync_api import Playwright
 
+from config import get_auth_storage_state_path, get_env
 from pages.contact_page import ContactPage
 from pages.login_page import LoginPage
-
-load_dotenv(dotenv_path=".env")
 
 
 @pytest.fixture(scope="session")
@@ -17,7 +13,7 @@ def browser_context_args(browser_context_args: dict) -> dict:
     return {
         **browser_context_args,
         "viewport": {"width": 1280, "height": 720},
-        "storage_state": "auth.json",
+        "storage_state": str(get_auth_storage_state_path()),
     }
 
 
@@ -49,13 +45,10 @@ def log_test_name(request):
 
 @pytest.fixture(scope="session")
 def credentials() -> dict[str, str]:
-    username = os.getenv("APP_USERNAME")
-    password = os.getenv("APP_PASSWORD")
-
-    assert username, "APP_USERNAME не знайдено у .env"
-    assert password, "APP_PASSWORD не знайдено у .env"
-
-    return {"username": username, "password": password}
+    return {
+        "username": get_env("APP_USERNAME"),
+        "password": get_env("APP_PASSWORD"),
+    }
 
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
@@ -77,7 +70,8 @@ def pytest_runtest_makereport(item, call):
 @pytest.fixture(scope="session", autouse=True)
 def create_storage_state(playwright: Playwright, credentials: dict[str, str]) -> None:
     """Create a fresh authenticated storage state for each test session."""
-    auth_file_path = "auth.json"
+    auth_file_path = get_auth_storage_state_path()
+    auth_file_path.parent.mkdir(parents=True, exist_ok=True)
 
     browser = playwright.chromium.launch(headless=True)
     context = browser.new_context()
@@ -88,5 +82,5 @@ def create_storage_state(playwright: Playwright, credentials: dict[str, str]) ->
     login_page.login(credentials["username"], credentials["password"])
     page.wait_for_url("**/logged-in-successfully/")
 
-    context.storage_state(path=auth_file_path)
+    context.storage_state(path=str(auth_file_path))
     browser.close()
