@@ -1,6 +1,5 @@
 name: Playwright Tests
 
-# Вказуємо, коли запускати workflow
 on:
   push:
     branches: [ main, master ]
@@ -9,34 +8,37 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest # Запускаємо на свіжому Linux-сервері від GitHub
+    runs-on: ubuntu-latest
 
     steps:
-    # 1. Завантажуємо код репозиторію у віртуальну машину
+    # 1. Завантажуємо код
     - name: Checkout code
       uses: actions/checkout@v4
 
-    # 2. Налаштовуємо Python версії 3.10
+    # 2. Налаштовуємо Python
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.10'
-        cache: 'pip' # Кешуємо залежності для швидшого завантаження
+        cache: 'pip'
 
-    # 3. Встановлюємо залежності з requirements.txt
+    # 3. Встановлюємо залежності
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    # 4. Встановлюємо браузери Playwright та їх системні ліби для Linux
+    # 4. Встановлюємо браузери Playwright
     - name: Install Playwright Browsers
       run: playwright install --with-deps
 
-    # 5. Запускаємо наші тести паралельно через pytest-xdist
+    # 5. Створюємо файл .env динамічно з GitHub Secrets 🔥 (Ось чого бракувало)
+    - name: Create .env file
+      run: |
+        echo "APP_USERNAME=${{ secrets.APP_USERNAME }}" >> .env
+        echo "APP_PASSWORD=${{ secrets.APP_PASSWORD }}" >> .env
+
+    # 6. Запускаємо тести
     - name: Run Pytest tests
-      env:
-        USERNAME: ${{ secrets.USERNAME }}
-        PASSWORD: ${{ secrets.PASSWORD }}
       run: |
         pytest -n auto --alluredir=allure-results
