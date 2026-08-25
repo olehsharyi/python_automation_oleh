@@ -1,12 +1,9 @@
 "DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
-"","1135","Contact form values are correctly saved and verified","tests","2026-08-25","passed","2026-08-25","","test_contact_page","",""
-"","786","Unsuccessful login for user: wronguser","tests","2026-08-25","passed","2026-08-25","","test_login","",""
-"","878","Avatar is visible","tests","2026-08-25","passed","2026-08-25","","test_contact_page","",""
-"","1207","Avatar is loaded","tests","2026-08-25","passed","2026-08-25","","test_contact_page","",""
-"","1133","Successful login with valid credentials","tests","2026-08-25","passed","2026-08-25","","test_login","",""
-"","1355","Contact page is opened and title is correct","tests","2026-08-25","passed","2026-08-25","","test_contact_page","",""
-"Test that verifies user session is restored via auth.json,
-
-    allowing direct access to protected pages without re-logging in.
-    ","523","User is logged in automatically using storage state","tests","2026-08-25","passed","2026-08-25","","test_profile","",""
-"","568","Unsuccessful login for user: student","tests","2026-08-25","passed","2026-08-25","","test_login","",""
+"","464","Unsuccessful login for user: wronguser","tests","2026-08-25","passed","2026-08-25","","test_login","",""
+"Test that verifies user session is restored via the stored auth state.","719","User is logged in automatically using storage state","tests","2026-08-25","passed","2026-08-25","","test_profile","",""
+"","797","Avatar is loaded","tests","2026-08-25","passed","2026-08-25","","test_contact_page","",""
+"","703","Contact page is opened and title is correct","tests","2026-08-25","passed","2026-08-25","","test_contact_page","",""
+"","1070","Successful login with valid credentials","tests","2026-08-25","passed","2026-08-25","","test_login","",""
+"","618","Avatar is visible","tests","2026-08-25","passed","2026-08-25","","test_contact_page","",""
+"","687","Contact form values are correctly saved and verified","tests","2026-08-25","passed","2026-08-25","","test_contact_page","",""
+"","443","Unsuccessful login for user: student","tests","2026-08-25","passed","2026-08-25","","test_login","",""
