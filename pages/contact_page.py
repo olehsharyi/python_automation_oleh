@@ -1,10 +1,12 @@
 from playwright.sync_api import Page, expect
 
+from config import CONTACT_URL
 from pages.base_page import BasePage
 
 
 class ContactPage(BasePage):
-    URL_PATH = "https://practicetestautomation.com/contact/"
+    PAGE_TITLE = "Contact"
+    URL_PATH = CONTACT_URL
 
     def __init__(self, page: Page) -> None:
         super().__init__(page)
@@ -17,19 +19,23 @@ class ContactPage(BasePage):
         self.title = page.get_by_role("heading", level=1)
 
     def get_title(self) -> str:
-        """Повертає текст заголовка сторінки."""
+        """Return the page heading text."""
         return self.title.inner_text()
 
     def verify_title(self, expected_title: str) -> None:
-        """Перевірка заголовка сторінки з авто-очікуванням."""
+        """Validate the page title with Playwright auto-waiting."""
         expect(self.title).to_have_text(expected_title)
 
     def check_avatar_is_visible(self) -> None:
         expect(self.avatar).to_be_visible()
 
     def check_avatar_is_loaded(self) -> None:
-        is_loaded = self.avatar.evaluate("img => img.complete && img.naturalWidth > 0")
-        assert is_loaded, "Картинка присутня в коді, але не завантажилася"
+        is_loaded = self.avatar.evaluate(
+            "img => img.complete && img.naturalWidth > 0"
+        )
+        assert is_loaded, (
+            "The image is present in the DOM, but it did not finish loading."
+        )
 
     def fill_form(
         self, first_name: str, last_name: str, email: str, message: str
