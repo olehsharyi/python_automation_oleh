@@ -18,12 +18,12 @@ A modular, scalable test automation framework built with **Python**, **Pytest**,
 ## 🛠️ Tech Stack
 
 * **Language:** Python 3.10+
-* **Test Runner:** `pytest`
+* **Test Runner:** `pytest` (+ `pytest-xdist` for parallel execution)
 * **Automation Tools:** `playwright`
 * **Reporting:** `allure-pytest`
 * **Utilities:** `python-dotenv`
-
 * **Code Quality & Formatting:** `ruff` (linter and code formatter)
+
 ---
 
 ## ⚙️ How to Run Tests
