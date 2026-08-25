@@ -2,43 +2,49 @@ name: Playwright Tests
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [main, master]
   pull_request:
-    branches: [ main, master ]
+    branches: [main, master]
 
 jobs:
   test:
     runs-on: ubuntu-latest
 
     steps:
-    # 1. Завантажуємо код
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    # 2. Налаштовуємо Python
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.10'
-        cache: 'pip'
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: pip
 
-    # 3. Встановлюємо залежності
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-    # 4. Встановлюємо браузери Playwright
-    - name: Install Playwright Browsers
-      run: playwright install --with-deps
+      - name: Install Playwright Browsers
+        run: playwright install --with-deps
 
-    # 5. Створюємо файл .env динамічно з GitHub Secrets 🔥 (Ось чого бракувало)
-    - name: Create .env file
-      run: |
-        echo "APP_USERNAME=${{ secrets.APP_USERNAME }}" >> .env
-        echo "APP_PASSWORD=${{ secrets.APP_PASSWORD }}" >> .env
+      - name: Run Ruff
+        run: |
+          ruff check .
+          ruff format --check .
 
-    # 6. Запускаємо тести
-    - name: Run Pytest tests
-      run: |
-        pytest -n auto --alluredir=allure-results
+      - name: Create .env file
+        run: |
+          echo "APP_USERNAME=${{ secrets.APP_USERNAME }}" >> .env
+          echo "APP_PASSWORD=${{ secrets.APP_PASSWORD }}" >> .env
+
+      - name: Run Pytest tests
+        run: |
+          pytest -n auto --alluredir=allure-results
+
+      - name: Upload Allure results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results
+          path: allure-results
