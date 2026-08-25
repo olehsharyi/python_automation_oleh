@@ -1,6 +1,15 @@
+# Python / Pytest cache
 __pycache__/
 .pytest_cache/
+
+# Environment variables & virtual environment
 .env
 .venv/
-screenshots/
+
+# IDE settings
 .idea/
+
+# Local test artifacts & screenshots
+screenshots/
+allure-results/
+allure-report/

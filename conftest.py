@@ -62,18 +62,25 @@ def credentials() -> dict:
 
 # --- Скріншоти при падінні ---
 
+import allure
+import pytest
+
+
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
 def pytest_runtest_makereport(item, call):
     outcome = yield
     rep = outcome.get_result()
+
+    # Зберігаємо результат тесту в item (для інших фікстур)
     setattr(item, "rep_" + rep.when, rep)
 
+    # Якщо тест впав під час виконання — додаємо скріншот в Allure
+    if rep.when == "call" and rep.failed:
+        page = item.funcargs.get("page")
+        if page:
+            allure.attach(
+                page.screenshot(full_page=True),
+                name="failure_screenshot",
+                attachment_type=allure.attachment_type.PNG
+            )
 
-@pytest.fixture(autouse=True)
-def screenshot_on_failure(page, request):
-    yield
-
-    rep_call = getattr(request.node, "rep_call", None)
-    if rep_call and rep_call.failed:
-        os.makedirs("screenshots", exist_ok=True)
-        page.screenshot(path=f"screenshots/{request.node.name}.png")
