@@ -2,13 +2,19 @@
 import allure
 import pytest
 from playwright.sync_api import Page
+
 from pages.login_page import LoginPage
 from pages.success_page import SuccessPage
 
+
 @pytest.fixture(scope="function")
 def browser_context_args(browser_context_args: dict) -> dict:
-    """Override global storage state for login tests to start with a clean browser session."""
+    """Override global storage state for login tests
+
+    to start with a clean browser session.
+    """
     return {**browser_context_args, "storage_state": None}
+
 
 @pytest.mark.smoke
 @allure.epic("UI Automation")

@@ -23,6 +23,7 @@ A modular, scalable test automation framework built with **Python**, **Pytest**,
 * **Reporting:** `allure-pytest`
 * **Utilities:** `python-dotenv`
 
+* **Code Quality & Formatting:** `ruff` (linter and code formatter)
 ---
 
 ## ⚙️ How to Run Tests

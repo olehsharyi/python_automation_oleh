@@ -1,7 +1,8 @@
 import allure
 import pytest
-from pages.contact_page import ContactPage
+
 from data.contact_data import CONTACT_FORM_DATA
+from pages.contact_page import ContactPage
 
 
 @pytest.mark.smoke
@@ -16,6 +17,7 @@ def test_contact_page_is_opened(contact_page: ContactPage) -> None:
     with allure.step("Verify page title"):
         assert contact_page.get_title() == "Contact"
 
+
 @pytest.mark.regression
 @allure.epic("UI Automation")
 @allure.feature("Contact Page")
@@ -26,6 +28,7 @@ def test_avatar_is_visible(contact_page: ContactPage) -> None:
         contact_page.open()
     with allure.step("Check that avatar is visible"):
         contact_page.check_avatar_is_visible()
+
 
 @pytest.mark.regression
 @allure.epic("UI Automation")
@@ -38,6 +41,7 @@ def test_avatar_is_loaded(contact_page: ContactPage) -> None:
 
     with allure.step("Check that avatar is loaded"):
         contact_page.check_avatar_is_loaded()
+
 
 @pytest.mark.regression
 @allure.epic("UI Automation")

@@ -22,7 +22,9 @@ def test_user_is_already_logged_in(page: Page) -> None:
     # 2. Verify that the user session is active (e.g., 'Log out' button is visible)
     with allure.step("Verify that 'Log out' button is visible"):
         logout_button = page.locator("a:has-text('Log out')")
-        assert logout_button.is_visible(), "User session was not restored, 'Log out' button is missing!"
+        assert logout_button.is_visible(), (
+            "User session was not restored, 'Log out' button is missing!"
+        )
 
     # 3. Verify success header message
     with allure.step("Verify success header text"):

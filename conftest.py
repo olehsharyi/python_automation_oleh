@@ -1,11 +1,12 @@
 import os
+
+import allure
 import pytest
 from dotenv import load_dotenv
+from playwright.sync_api import Playwright
 
 from pages.contact_page import ContactPage
 from pages.login_page import LoginPage
-
-from playwright.sync_api import Playwright
 
 load_dotenv(dotenv_path=".env")
 
@@ -31,6 +32,7 @@ def browser_type_launch_args(browser_type_launch_args):
 
 # --- Фікстури сторінок ---
 
+
 @pytest.fixture
 def login_page(page) -> LoginPage:
     return LoginPage(page)
@@ -42,6 +44,7 @@ def contact_page(page) -> ContactPage:
 
 
 # --- Допоміжні фікстури ---
+
 
 @pytest.fixture(autouse=True)
 def log_test_name(request):
@@ -58,16 +61,7 @@ def credentials() -> dict:
     assert username, "APP_USERNAME не знайдено у .env"
     assert password, "APP_PASSWORD не знайдено у .env"
 
-    return {
-        "username": username,
-        "password": password
-    }
-
-
-# --- Скріншоти при падінні ---
-
-import allure
-import pytest
+    return {"username": username, "password": password}
 
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
@@ -85,7 +79,7 @@ def pytest_runtest_makereport(item, call):
             allure.attach(
                 page.screenshot(full_page=True),
                 name="failure_screenshot",
-                attachment_type=allure.attachment_type.PNG
+                attachment_type=allure.attachment_type.PNG,
             )
 
 
