@@ -1,7 +1,7 @@
 # Python Test Automation Framework
+[![Playwright Tests](https://github.com/olehsharyi/python_automation_oleh/actions/workflows/test.yml/badge.svg)](https://github.com/olehsharyi/python_automation_oleh/actions/workflows/test.yml)
 
 A modular, scalable test automation framework built with **Python**, **Pytest**, and **Playwright**. Designed following the **Page Object Model (POM)** pattern to ensure high maintainability, reliability, and clean code standards.
-
 ## 🚀 Key Features
 
 * **UI Automation:** Powered by Playwright (Sync API) for fast, resilient cross-browser testing.
