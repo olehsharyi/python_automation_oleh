@@ -5,14 +5,18 @@ from dotenv import load_dotenv
 from pages.contact_page import ContactPage
 from pages.login_page import LoginPage
 
+from playwright.sync_api import Playwright
+
 load_dotenv(dotenv_path=".env")
 
 
 @pytest.fixture(scope="session")
-def browser_context_args(browser_context_args):
+def browser_context_args(browser_context_args: dict) -> dict:
+    """Configure global browser context settings (viewport and storage state)."""
     return {
         **browser_context_args,
         "viewport": {"width": 1280, "height": 720},
+        "storage_state": "auth.json",
     }
 
 
@@ -84,3 +88,31 @@ def pytest_runtest_makereport(item, call):
                 attachment_type=allure.attachment_type.PNG
             )
 
+
+@pytest.fixture(scope="session", autouse=True)
+def create_storage_state(playwright: Playwright, credentials: dict[str, str]) -> None:
+    """Fixture to generate and save storage state (auth.json) once per test session."""
+    auth_file_path = "auth.json"
+
+    # If the auth.json file already exists, we can skip re-logging in every time
+    if os.path.exists(auth_file_path):
+        return  # ← Змінили yield на return
+
+    # Launch the browser to create a session
+    browser = playwright.chromium.launch(headless=True)
+    context = browser.new_context()
+    page = context.new_page()
+
+    # Use your LoginPage object
+    login_page = LoginPage(page)
+    login_page.open()
+
+    # Credentials are taken from the credentials fixture
+    login_page.login(credentials["username"], credentials["password"])
+
+    # Wait for a successful redirection to the secure page
+    page.wait_for_url("**/logged-in-successfully/")
+
+    # Save the session state into the auth.json file
+    page.context.storage_state(path=auth_file_path)
+    browser.close()

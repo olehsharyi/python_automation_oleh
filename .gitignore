@@ -13,3 +13,4 @@ __pycache__/
 screenshots/
 allure-results/
 allure-report/
+auth.json
