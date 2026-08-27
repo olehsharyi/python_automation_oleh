@@ -1,0 +1,5 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","904","Avatar is visible","tests","2026-08-27","passed","2026-08-27","","test_contact_page","",""
+"","737","Contact form values are correctly saved and verified","tests","2026-08-27","passed","2026-08-27","","test_contact_page","",""
+"","596","Verify mocked response for login request","tests","2026-08-27","passed","2026-08-27","","test_network_intercept","",""
+"","1055","Avatar is loaded","tests","2026-08-27","passed","2026-08-27","","test_contact_page","",""
