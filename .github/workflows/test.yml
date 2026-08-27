@@ -2,6 +2,17 @@ name: Playwright Tests & Linters
 
 on:
   workflow_dispatch:
+    inputs:
+      test_suite:
+        description: "Choose test suite"
+        required: true
+        default: "smoke"
+        type: choice
+        options:
+          - smoke
+          - regression
+          - slow
+          - all
 
 jobs:
   # 1. Job for code linting using Ruff
@@ -14,8 +25,8 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
-          cache: 'pip'
+          python-version: "3.10"
+          cache: "pip"
 
       - name: Install dependencies
         run: |
@@ -26,72 +37,79 @@ jobs:
         run: |
           ruff check .
 
-  # 2. Job for web tests (runs after successful linting)
+  # 2. Job for web tests
   test:
     needs: lint
     runs-on: ubuntu-latest
 
-    # Required permissions to publish the report to the gh-pages branch
     permissions:
       contents: write
 
     steps:
-    # 1. Checkout repository code
-    - name: Checkout code
-      uses: actions/checkout@v4
+      # 1. Checkout repository code
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    # 2. Set up Python environment
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.10'
-        cache: 'pip'
+      # 2. Set up Python environment
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: "pip"
 
-    # 3. Install project dependencies
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+      # 3. Install project dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-    # 4. Install Playwright browsers and dependencies
-    - name: Install Playwright Browsers
-      run: playwright install --with-deps
+      # 4. Install Playwright browsers and dependencies
+      - name: Install Playwright Browsers
+        run: playwright install --with-deps
 
-    # 5. Create .env file dynamically from GitHub Secrets
-    - name: Create .env file
-      run: |
-        echo "APP_USERNAME=${{ secrets.APP_USERNAME }}" >> .env
-        echo "APP_PASSWORD=${{ secrets.APP_PASSWORD }}" >> .env
+      # 5. Create .env file dynamically from GitHub Secrets
+      - name: Create .env file
+        run: |
+          echo "APP_USERNAME=${{ secrets.APP_USERNAME }}" >> .env
+          echo "APP_PASSWORD=${{ secrets.APP_PASSWORD }}" >> .env
 
-    # 6. Run Pytest tests in parallel with Allure results output
-    - name: Run Pytest tests
-      run: |
-        pytest -n auto --alluredir=allure-results
+      # 6. Run selected Pytest suite
+      - name: Run Pytest tests
+        run: |
+          if [ "${{ inputs.test_suite }}" = "smoke" ]; then
+            pytest -m smoke -n auto --alluredir=allure-results
+          elif [ "${{ inputs.test_suite }}" = "regression" ]; then
+            pytest -m regression -n auto --alluredir=allure-results
+          elif [ "${{ inputs.test_suite }}" = "slow" ]; then
+            pytest -m slow -n auto --alluredir=allure-results
+          else
+            pytest -n auto --alluredir=allure-results
+          fi
 
-    # 7. Download previous Allure report history for trends
-    - name: Get Allure history
-      uses: actions/checkout@v4
-      if: always()
-      continue-on-error: true
-      with:
-        ref: gh-pages
-        path: allure-history
+      # 7. Download previous Allure history for trends
+      - name: Get Allure history
+        uses: actions/checkout@v4
+        if: always()
+        continue-on-error: true
+        with:
+          ref: gh-pages
+          path: allure-history
 
-    # 8. Build Allure HTML report
-    - name: Build Allure Report
-      uses: simple-elf/allure-report-action@master
-      if: always()
-      with:
-        allure_results: allure-results
-        allure_history: allure-history
-        keep_reports: 20
+      # 8. Build Allure HTML report
+      - name: Build Allure Report
+        uses: simple-elf/allure-report-action@master
+        if: always()
+        with:
+          allure_results: allure-results
+          allure_history: allure-history
+          keep_reports: 20
 
-    # 9. Deploy generated HTML report to GitHub Pages
-    - name: Deploy Report to GitHub Pages
-      if: always()
-      uses: peaceiris/actions-gh-pages@v4
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_branch: gh-pages
-        publish_dir: allure-report
-        commit_message: "Deploy Allure report for ${{ github.sha }}"
+      # 9. Deploy generated HTML report to GitHub Pages
+      - name: Deploy Report to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: allure-report
+          commit_message: "Deploy Allure report for ${{ github.sha }}"
