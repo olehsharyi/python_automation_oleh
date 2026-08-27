@@ -1,3 +1,0 @@
-
-🚀 Починаємо: test_login_failure[chromium-wronguser-Password123-Your username is invalid!]
-✅ Завершено: test_login_failure[chromium-wronguser-Password123-Your username is invalid!]
