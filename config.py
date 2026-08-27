@@ -12,6 +12,8 @@ BASE_URL = "https://practicetestautomation.com"
 LOGIN_URL = f"{BASE_URL}/practice-test-login/"
 CONTACT_URL = f"{BASE_URL}/contact/"
 SUCCESS_URL = f"{BASE_URL}/logged-in-successfully/"
+AUTOMATE_NOW = "https://practice-automation.com/"
+IFRAME_URL = f"{AUTOMATE_NOW}/iframe/"
 
 
 def get_env(name: str) -> str:

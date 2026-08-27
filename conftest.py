@@ -4,6 +4,7 @@ from playwright.sync_api import Playwright
 
 from config import get_auth_storage_state_path, get_env
 from pages.contact_page import ContactPage
+from pages.iframe_page import IFramePage
 from pages.login_page import LoginPage
 
 
@@ -30,6 +31,9 @@ def browser_type_launch_args(browser_type_launch_args: dict) -> dict:
 def login_page(page) -> LoginPage:
     return LoginPage(page)
 
+@pytest.fixture
+def iframe_page(page) -> IFramePage:
+    return IFramePage(page)
 
 @pytest.fixture
 def contact_page(page) -> ContactPage:
