@@ -8,6 +8,8 @@ __pycache__/
 
 # IDE settings
 .idea/
+.vscode/
+.continue/
 
 # Local test artifacts & screenshots
 screenshots/
