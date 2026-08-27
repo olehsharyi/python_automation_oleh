@@ -57,3 +57,30 @@ def test_contact_form_values(contact_page: ContactPage) -> None:
 
     with allure.step("Verify that all values are correctly written into inputs"):
         contact_page.verify_form_values(**CONTACT_FORM_DATA)
+
+
+@pytest.mark.parametrize(
+    "email",
+    [
+        "invalid",
+        "invalid@",
+        "@example.com",
+        "user@",
+        "user example@example.com",
+    ],
+)
+def test_contact_form_rejects_invalid_email(
+    contact_page: ContactPage,
+    email: str,
+) -> None:
+    contact_page.open()
+
+    contact_page.fill_form(
+        "Oleh",
+        "Sharyi",
+        email,
+        "Test message",
+    )
+
+    contact_page.verify_email_is_invalid()
+

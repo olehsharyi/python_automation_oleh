@@ -36,7 +36,11 @@ class ContactPage(BasePage):
         )
 
     def fill_form(
-        self, first_name: str, last_name: str, email: str, message: str
+        self,
+        first_name: str,
+        last_name: str,
+        email: str,
+        message: str,
     ) -> None:
         self.first_name_input.fill(first_name)
         self.last_name_input.fill(last_name)
@@ -44,9 +48,40 @@ class ContactPage(BasePage):
         self.message_input.fill(message)
 
     def verify_form_values(
-        self, first_name: str, last_name: str, email: str, message: str
+        self,
+        first_name: str,
+        last_name: str,
+        email: str,
+        message: str,
     ) -> None:
         expect(self.first_name_input).to_have_value(first_name)
         expect(self.last_name_input).to_have_value(last_name)
         expect(self.email_input).to_have_value(email)
         expect(self.message_input).to_have_value(message)
+
+    def verify_required_field(self, field: str) -> None:
+        locator = {
+            "first_name": self.first_name_input,
+            "last_name": self.last_name_input,
+            "email": self.email_input,
+            "message": self.message_input,
+        }[field]
+
+        expect(locator).to_be_invalid()
+
+    def verify_email_is_invalid(self) -> None:
+        is_valid = self.email_input.evaluate(
+            "element => element.validity.valid"
+        )
+        assert not is_valid, "Please enter a valid email address."
+
+    def verify_field_value(self, field: str, expected_value: str) -> None:
+        locator = {
+            "first_name": self.first_name_input,
+            "last_name": self.last_name_input,
+            "email": self.email_input,
+            "message": self.message_input,
+        }[field]
+
+        expect(locator).to_have_value(expected_value)
+
