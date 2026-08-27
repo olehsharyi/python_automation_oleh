@@ -3,7 +3,7 @@ from playwright.sync_api import Page
 
 from pages.iframe_page import IFramePage
 
-""" @pytest.mark.parametrize(
+@pytest.mark.parametrize(
     "link_name, expected_title",
     [
         ("Docs", "Installation"),
@@ -21,7 +21,7 @@ def test_iframe_navigation(
     iframe_page.verify_heading(expected_title)
 
 
- """
+
 
 @pytest.mark.parametrize(
     "toc_link,expected_heading",
