@@ -22,8 +22,6 @@ def test_iframe_navigation(
     iframe_page.verify_heading(expected_title)
 
 
-
-
 @pytest.mark.parametrize(
     "toc_link,expected_heading",
     [
@@ -40,8 +38,7 @@ def test_iframe_toc_navigation(
     iframe_page.open()
     iframe_page.click_link("Docs")
     iframe_page.click_link("Installation")
-    
+
     iframe_page.click_link(toc_link)
-    
+
     iframe_page.verify_heading(expected_heading, level=2)
-    

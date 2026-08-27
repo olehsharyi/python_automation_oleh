@@ -21,14 +21,21 @@ def browser_context_args(browser_context_args: dict) -> dict:
 @allure.feature("Authentication")
 @allure.story("Successful Login")
 @allure.title("Successful login with valid credentials")
-def test_login_success(login_page: LoginPage, page: Page, credentials: dict) -> None:
+def test_login_success(
+    login_page: LoginPage,
+    page: Page,
+    credentials: dict,
+) -> None:
     with allure.step("Open login page"):
         login_page.open()
 
-    with allure.step("Enter credentials from .env and click login"):
-        # Use credentials from .env via the fixture
-        login_page.login(credentials["username"], credentials["password"])
-    with allure.step("Verify successful login and redirection"):
+    with allure.step("Login with valid credentials"):
+        login_page.login(
+            credentials["username"],
+            credentials["password"],
+        )
+
+    with allure.step("Verify successful login"):
         success_page = SuccessPage(page)
         success_page.verify_successful_login()
 
@@ -36,22 +43,78 @@ def test_login_success(login_page: LoginPage, page: Page, credentials: dict) -> 
 @pytest.mark.parametrize(
     "username, password, expected_error",
     [
-        ("student", "wrongpass", "Your password is invalid!"),
-        ("wronguser", "Password123", "Your username is invalid!"),
+        (
+            "student",
+            "wrongpass",
+            "Your password is invalid!",
+        ),
+        (
+            "wronguser",
+            "Password123",
+            "Your username is invalid!",
+        ),
+        (
+            "wronguser",
+            "wrongpass",
+            "Your username is invalid!",
+        ),
     ],
 )
 @allure.epic("UI Automation")
 @allure.feature("Authentication")
 @allure.story("Unsuccessful Login")
-@allure.title("Unsuccessful login for user: {username}")
-def test_login_failure(
-    login_page: LoginPage, username: str, password: str, expected_error: str
+@allure.title("Login fails with invalid credentials: {username}")
+def test_login_with_invalid_credentials(
+    login_page: LoginPage,
+    username: str,
+    password: str,
+    expected_error: str,
 ) -> None:
     with allure.step("Open login page"):
         login_page.open()
 
-    with allure.step(f"Attempt to login with username '{username}'"):
+    with allure.step("Attempt login with invalid credentials"):
         login_page.login(username, password)
 
-    with allure.step(f"Verify error message appears: '{expected_error}'"):
+    with allure.step("Verify error message"):
+        login_page.verify_error_message(expected_error)
+
+
+@pytest.mark.parametrize(
+    "username, password, expected_error",
+    [
+        (
+            "",
+            "Password123",
+            "Your username is invalid!",
+        ),
+        (
+            "student",
+            "",
+            "Your password is invalid!",
+        ),
+        (
+            "",
+            "",
+            "Your username is invalid!",
+        ),
+    ],
+)
+@allure.epic("UI Automation")
+@allure.feature("Authentication")
+@allure.story("Login Validation")
+@allure.title("Login validation: username='{username}', password='{password}'")
+def test_login_validation(
+    login_page: LoginPage,
+    username: str,
+    password: str,
+    expected_error: str,
+) -> None:
+    with allure.step("Open login page"):
+        login_page.open()
+
+    with allure.step("Submit login form"):
+        login_page.login(username, password)
+
+    with allure.step("Verify validation error"):
         login_page.verify_error_message(expected_error)

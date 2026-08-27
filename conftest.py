@@ -31,9 +31,11 @@ def browser_type_launch_args(browser_type_launch_args: dict) -> dict:
 def login_page(page) -> LoginPage:
     return LoginPage(page)
 
+
 @pytest.fixture
 def iframe_page(page) -> IFramePage:
     return IFramePage(page)
+
 
 @pytest.fixture
 def contact_page(page) -> ContactPage:

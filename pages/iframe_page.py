@@ -12,9 +12,9 @@ class IFramePage(BasePage):
         self.iframe_1 = page.frame_locator("#iframe-1")
 
     def click_link(self, link_name: str) -> None:
-            link = self.iframe_1.get_by_role("link", name=link_name, exact=True)
-            link.scroll_into_view_if_needed()
-            link.click()
+        link = self.iframe_1.get_by_role("link", name=link_name, exact=True)
+        link.scroll_into_view_if_needed()
+        link.click()
 
     def verify_heading(self, expected_title: str, level: int = 1) -> None:
         heading = self.iframe_1.get_by_role("heading", level=level, name=expected_title)

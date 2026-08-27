@@ -30,9 +30,7 @@ class ContactPage(BasePage):
         expect(self.avatar).to_be_visible()
 
     def check_avatar_is_loaded(self) -> None:
-        is_loaded = self.avatar.evaluate(
-            "img => img.complete && img.naturalWidth > 0"
-        )
+        is_loaded = self.avatar.evaluate("img => img.complete && img.naturalWidth > 0")
         assert is_loaded, (
             "The image is present in the DOM, but it did not finish loading."
         )
