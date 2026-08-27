@@ -1,13 +1,20 @@
+import allure
+import pytest
 from playwright.sync_api import Page, expect
 
 from pages.login_page import LoginPage
 
 
+@pytest.mark.regression
+@allure.epic("UI Automation")
+@allure.feature("Network Interception")
+@allure.story("Login Page Mocked Response")
+@allure.title("Verify mocked response for login request")
 def test_login_page_mocked_response(
     page: Page,
     login_page: LoginPage,
     credentials: dict[str, str],
-):
+) -> None:
     mocked_title = "MOCKED_ERROR_STATE"
     was_intercepted = {"value": False}
 
@@ -29,10 +36,25 @@ def test_login_page_mocked_response(
 
         route.continue_()
 
-    page.route("**/logged-in-successfully**", handle_route)
+    with allure.step("Configure route interception"):
+        page.route("**/logged-in-successfully**", handle_route)
 
-    login_page.open()
-    login_page.login(credentials["username"], credentials["password"])
+    with allure.step("Open login page"):
+        login_page.open()
 
-    assert was_intercepted["value"] is True, "Помилка: запит не був перехоплений!"
-    expect(page.get_by_role("heading", level=1)).to_have_text(mocked_title)
+    with allure.step("Login with valid credentials"):
+        login_page.login(
+            credentials["username"],
+            credentials["password"],
+        )
+
+    with allure.step("Verify request was intercepted"):
+        assert was_intercepted["value"] is True, (
+            "Error: login request was not intercepted!"
+        )
+
+    with allure.step("Verify mocked response is displayed"):
+        expect(
+            page.get_by_role("heading", level=1)
+        ).to_have_text(mocked_title)
+

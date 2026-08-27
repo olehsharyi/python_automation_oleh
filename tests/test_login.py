@@ -60,6 +60,7 @@ def test_login_success(
         ),
     ],
 )
+@pytest.mark.smoke
 @allure.epic("UI Automation")
 @allure.feature("Authentication")
 @allure.story("Unsuccessful Login")
@@ -100,6 +101,7 @@ def test_login_with_invalid_credentials(
         ),
     ],
 )
+@pytest.mark.smoke
 @allure.epic("UI Automation")
 @allure.feature("Authentication")
 @allure.story("Login Validation")
