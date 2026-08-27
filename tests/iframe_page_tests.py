@@ -3,6 +3,7 @@ from playwright.sync_api import Page
 
 from pages.iframe_page import IFramePage
 
+
 @pytest.mark.parametrize(
     "link_name, expected_title",
     [
