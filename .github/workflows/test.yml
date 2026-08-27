@@ -86,30 +86,32 @@ jobs:
             pytest -n auto --alluredir=allure-results
           fi
 
-      # 7. Download previous Allure history for trends
+      # 7. Download the existing gh-pages branch for Allure history
       - name: Get Allure history
         uses: actions/checkout@v4
         if: always()
         continue-on-error: true
         with:
           ref: gh-pages
-          path: allure-history
+          path: gh-pages
 
-      # 8. Build Allure HTML report
+      # 8. Build Allure HTML report and preserve history
       - name: Build Allure Report
         uses: simple-elf/allure-report-action@master
         if: always()
         with:
           allure_results: allure-results
+          gh_pages: gh-pages
+          allure_report: allure-report
           allure_history: allure-history
           keep_reports: 20
 
-      # 9. Deploy generated HTML report to GitHub Pages
+      # 9. Deploy the generated report and history to GitHub Pages
       - name: Deploy Report to GitHub Pages
         if: always()
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: allure-report
+          publish_dir: allure-history
           commit_message: "Deploy Allure report for ${{ github.sha }}"
