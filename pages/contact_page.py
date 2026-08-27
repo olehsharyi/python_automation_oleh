@@ -70,9 +70,7 @@ class ContactPage(BasePage):
         expect(locator).to_be_invalid()
 
     def verify_email_is_invalid(self) -> None:
-        is_valid = self.email_input.evaluate(
-            "element => element.validity.valid"
-        )
+        is_valid = self.email_input.evaluate("element => element.validity.valid")
         assert not is_valid, "Please enter a valid email address."
 
     def verify_field_value(self, field: str, expected_value: str) -> None:
@@ -84,4 +82,3 @@ class ContactPage(BasePage):
         }[field]
 
         expect(locator).to_have_value(expected_value)
-

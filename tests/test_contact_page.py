@@ -83,4 +83,3 @@ def test_contact_form_rejects_invalid_email(
     )
 
     contact_page.verify_email_is_invalid()
-

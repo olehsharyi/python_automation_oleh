@@ -87,6 +87,5 @@ def create_storage_state(playwright: Playwright, credentials: dict[str, str]) ->
     login_page.open()
     login_page.login(credentials["username"], credentials["password"])
     page.wait_for_url("**/logged-in-successfully/")
-
     context.storage_state(path=str(auth_file_path))
     browser.close()
