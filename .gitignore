@@ -14,3 +14,6 @@ screenshots/
 allure-results/
 allure-report/
 auth.json
+
+# Playwright authentication state
+auth-*.json
