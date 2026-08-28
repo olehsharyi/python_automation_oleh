@@ -45,6 +45,36 @@ jobs:
     permissions:
       contents: write
 
+
+  notify:
+  needs: [lint, test]
+  if: always()
+  runs-on: ubuntu-latest
+
+  steps:
+    - name: Send Discord notification
+      env:
+        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        TEST_STATUS: ${{ needs.test.result }}
+        LINT_STATUS: ${{ needs.lint.result }}
+      run: |
+        if [ "$LINT_STATUS" = "failure" ]; then
+          EMOJI="⚠️"
+          MESSAGE="Ruff linting failed"
+        elif [ "$TEST_STATUS" = "success" ]; then
+          EMOJI="✅"
+          MESSAGE="Automation tests passed"
+        else
+          EMOJI="❌"
+          MESSAGE="Automation tests failed"
+        fi
+
+        curl -H "Content-Type: application/json" \
+          -d "{
+            \"content\": \"$EMOJI $MESSAGE\n\n📊 Allure Report: https://olehsharyi.github.io/python_automation_oleh/\n🔗 GitHub Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}\"
+          }" \
+          "$DISCORD_WEBHOOK"
+
     steps:
       # 1. Checkout repository code
       - name: Checkout code
