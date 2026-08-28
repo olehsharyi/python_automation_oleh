@@ -3,7 +3,11 @@ import pytest
 
 from pages.iframe_page import IFramePage
 
-
+@pytest.mark.regression
+@allure.epic("UI Automation")
+@allure.feature("IFrame")
+@allure.story("Navigation")
+@allure.title("Navigate to link: {link_name}")
 @pytest.mark.parametrize(
     "link_name, expected_title",
     [
@@ -11,10 +15,6 @@ from pages.iframe_page import IFramePage
         ("MCP", "Playwright MCP"),
     ],
 )
-@allure.epic("UI Automation")
-@allure.feature("IFrame")
-@allure.story("Navigation")
-@allure.title("Navigate to link: {link_name}")
 def test_iframe_navigation(
     iframe_page: IFramePage,
     link_name: str,
@@ -38,6 +38,7 @@ def test_iframe_navigation(
         ),
     ],
 )
+@pytest.mark.regression
 @allure.epic("UI Automation")
 @allure.feature("IFrame")
 @allure.story("Table of Contents Navigation")

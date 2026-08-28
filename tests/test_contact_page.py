@@ -69,6 +69,11 @@ def test_contact_form_values(contact_page: ContactPage) -> None:
         "user example@example.com",
     ],
 )
+@pytest.mark.regression
+@allure.epic("UI Automation")
+@allure.feature("Contact Form")
+@allure.story("Form Validation")
+@allure.title("Contact form rejects invalid email: {email}")
 def test_contact_form_rejects_invalid_email(
     contact_page: ContactPage,
     email: str,
