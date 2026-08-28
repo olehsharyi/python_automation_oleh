@@ -14,3 +14,6 @@ class BasePage:
 
     def verify_url(self, expected_url: str) -> None:
         expect(self.page).to_have_url(expected_url)
+
+    def verify_page_url(self, page: Page, expected_url: str) -> None:
+        expect(page).to_have_url(expected_url)

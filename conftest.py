@@ -4,8 +4,11 @@ from playwright.sync_api import Playwright
 
 from config import get_auth_storage_state_path, get_env
 from pages.contact_page import ContactPage
+from pages.downloads_page import DownloadsPage
 from pages.iframe_page import IFramePage
+from pages.JavaScriptAlertsPage import JavaScriptAlertsPage
 from pages.login_page import LoginPage
+from pages.multiple_windows_page import MultipleWindowsPage
 
 
 @pytest.fixture(scope="session")
@@ -40,6 +43,21 @@ def iframe_page(page) -> IFramePage:
 @pytest.fixture
 def contact_page(page) -> ContactPage:
     return ContactPage(page)
+
+
+@pytest.fixture
+def multiple_windows_page(page) -> "MultipleWindowsPage":
+    return MultipleWindowsPage(page)
+
+
+@pytest.fixture
+def java_script_alerts_page(page) -> "JavaScriptAlertsPage":
+    return JavaScriptAlertsPage(page)
+
+
+@pytest.fixture
+def downloads_page(page) -> "DownloadsPage":
+    return DownloadsPage(page)
 
 
 @pytest.fixture(autouse=True)

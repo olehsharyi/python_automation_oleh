@@ -54,7 +54,4 @@ def test_login_page_mocked_response(
         )
 
     with allure.step("Verify mocked response is displayed"):
-        expect(
-            page.get_by_role("heading", level=1)
-        ).to_have_text(mocked_title)
-
+        expect(page.get_by_role("heading", level=1)).to_have_text(mocked_title)

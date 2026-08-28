@@ -14,6 +14,11 @@ CONTACT_URL = f"{BASE_URL}/contact/"
 SUCCESS_URL = f"{BASE_URL}/logged-in-successfully/"
 AUTOMATE_NOW = "https://practice-automation.com/"
 IFRAME_URL = f"{AUTOMATE_NOW}/iframe/"
+INTERNET_HERO_BASE_URL = "https://the-internet.herokuapp.com/"
+WINDOWS_URL = f"{INTERNET_HERO_BASE_URL}windows"
+WINDOWS_NEW_PAGE_URL = f"{INTERNET_HERO_BASE_URL}windows/new"
+ALLERT_URL = f"{INTERNET_HERO_BASE_URL}javascript_alerts"
+DOWNLOADS_URL = f"{INTERNET_HERO_BASE_URL}download"
 
 
 def get_env(name: str) -> str:
