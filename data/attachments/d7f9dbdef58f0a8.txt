@@ -1,0 +1,3 @@
+
+🚀 Починаємо: test_open_new_window[chromium]
+✅ Завершено: test_open_new_window[chromium]

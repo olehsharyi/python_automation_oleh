@@ -1,0 +1,4 @@
+
+🚀 Починаємо: test_open_new_page[chromium]
+https://the-internet.herokuapp.com/windows/new
+✅ Завершено: test_open_new_page[chromium]
