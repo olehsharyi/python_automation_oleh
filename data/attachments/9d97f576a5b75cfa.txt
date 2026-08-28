@@ -1,3 +1,0 @@
-
-🚀 Починаємо: test_contact_form_rejects_invalid_email[chromium-invalid@]
-✅ Завершено: test_contact_form_rejects_invalid_email[chromium-invalid@]
