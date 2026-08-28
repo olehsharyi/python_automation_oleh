@@ -1,3 +1,0 @@
-
-🚀 Починаємо: test_login_with_invalid_credentials[chromium-wronguser-wrongpass-Your username is invalid!]
-✅ Завершено: test_login_with_invalid_credentials[chromium-wronguser-wrongpass-Your username is invalid!]

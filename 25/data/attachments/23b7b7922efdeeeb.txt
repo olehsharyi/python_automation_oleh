@@ -1,3 +1,0 @@
-
-🚀 Починаємо: test_user_is_already_logged_in[chromium]
-✅ Завершено: test_user_is_already_logged_in[chromium]
