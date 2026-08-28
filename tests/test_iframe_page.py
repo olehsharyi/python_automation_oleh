@@ -3,6 +3,7 @@ import pytest
 
 from pages.iframe_page import IFramePage
 
+
 @pytest.mark.regression
 @allure.epic("UI Automation")
 @allure.feature("IFrame")
