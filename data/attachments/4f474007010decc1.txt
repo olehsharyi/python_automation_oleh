@@ -1,0 +1,3 @@
+
+🚀 Починаємо: test_avatar_is_visible[chromium]
+✅ Завершено: test_avatar_is_visible[chromium]
